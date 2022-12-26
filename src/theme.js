@@ -1,5 +1,6 @@
 import { createContext , useState , useMemo } from "react";
 import { createTheme } from "@mui/material/styles";
+import { color, typography } from "@mui/system";
 
 //colour tokens
 
@@ -123,3 +124,98 @@ export const tokens = (mode)=>({
         
     }
 });
+
+
+//mui theme settings
+export const themeSettings =(mode)=>{
+    const colors = tokens(mode);
+    return{
+        palette:{
+            mode: mode,
+            ...(mode ==="dark")
+            ?
+            {
+                primary:{
+                    main: colors.primary[500],
+                },
+                secondar:{
+                    main: colors.greenAccent[500],
+                },
+                neutral:{
+                    dark: colors.grey[700],
+                    main: colors.grey[500],
+                    light: colors.grey[100]
+                },
+                background:{
+                    default: colors.primary[500],
+                }
+            }:{
+                primary:{
+                    main: colors.primary[100],
+                },
+                secondar:{
+                    main: colors.greenAccent[500],
+                },
+                neutral:{
+                    dark: colors.grey[700],
+                    main: colors.grey[500],
+                    light: colors.grey[100]
+                },
+                background:{
+                    default: "#fcfcfc",
+                },
+            }
+        },
+        typography:{
+            fontFamily:["Poppins"," sans-serrif"].join(","),
+            fontSize:12,
+            h1 :{
+                fontFamily:["Poppins"," sans-serrif"].join(","),
+                fontSize:40,
+            },
+            h2 :{
+                fontFamily:["Poppins"," sans-serrif"].join(","),
+                fontSize:32,
+            },
+            h3 :{
+                fontFamily:["Poppins"," sans-serrif"].join(","),
+                fontSize:24,
+            },
+            h4 :{
+                fontFamily:["Poppins"," sans-serrif"].join(","),
+                fontSize:20,
+            },
+            h5 :{
+                fontFamily:["Poppins"," sans-serrif"].join(","),
+                fontSize:16,
+            },
+            h6 :{
+                fontFamily:["Poppins"," sans-serrif"].join(","),
+                fontSize:14,
+            }
+        },
+    }
+};
+
+
+//context for colour mode
+export const ColorModeContext = createContext({
+     toggleColourMode: () =>{}
+});
+
+export const useMode = () =>{
+     const[mode,setMode] = useState("dark");
+
+     const colorMode = useMemo(
+        () =>({
+            toggleColourMode:() =>
+            setMode((prev)=>(prev === "light" ? "dark" : "light"))
+        }), 
+        []
+     );
+
+     const theme = useMemo(()=> createTheme(themeSettings(mode)),[mode])
+
+     return [theme , colorMode];
+}
+

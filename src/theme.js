@@ -199,8 +199,11 @@ export const themeSettings =(mode)=>{
 
 
 //context for colour mode
+
 export const ColourModeContext = createContext({
-     toggleColourMode: () =>{}
+
+     toggleColourMode: () => {}
+
 });
 
 export const useMode = () =>{
